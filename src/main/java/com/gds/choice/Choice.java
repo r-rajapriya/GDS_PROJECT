@@ -7,11 +7,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+/**
+ * Entity class for Choice 
+ * 
+ * @author Rajapriya
+ *
+ */
 @Entity
 @Table(name = "user_choice")
 public class Choice {
 		
-	public Choice() {		
+	public Choice() {	
 	}
 
 	public Choice(String choiceId, String userId, long sessionId, Date joinDate) {

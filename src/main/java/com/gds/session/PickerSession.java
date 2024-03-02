@@ -2,20 +2,23 @@ package com.gds.session;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
-import org.hibernate.annotations.Formula;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.gds.choice.Choice;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * Entity class for Picker Session details
@@ -28,7 +31,7 @@ import jakarta.persistence.*;
 @Table(name = "session_master")
 public class PickerSession {
 		
-	public PickerSession() {		
+	public PickerSession() {
 	}
 
 	public PickerSession(long sessionId, String sessionName, Date eventDate, String sessionStatus, 
@@ -48,6 +51,7 @@ public class PickerSession {
 	private long sessionId;
 	
     @Column(name="session_name", nullable=false, unique=true)
+    @NotBlank(message = "Session Name is mandatory")
 	private String sessionName;
     
     @Column(name="event_date", nullable=false)
@@ -163,33 +167,4 @@ public class PickerSession {
 	public void setUserChoices(List<Choice> userChoices) {
 		this.userChoices = userChoices;
 	}
-	
-	/*@Column(updatable=false, insertable=false)
-	//@Formula(value = "select datediff(expiry_date,issue_date) as days_remaining from document_storage")
-	private Date userJoinDate;
-
-	public Date getUserJoinDate() {
-		return userJoinDate;
-	}
-
-	public void setUserJoinDate(Date userJoinDate) {
-		//Checks the current login user joined this session or not
-			
-			this.userChoices = this.userChoices.stream()
-					.filter(c -> (c.getUserId() == this.userId))
-					.filter(c -> (c.getJoinDate() != null))
-					.toList();
-			if(choiceList.size() > 0)
-				flag = true;
-			
-			System.out.println("isUserJoined - "+flag);
-			this.userJoinedFlag = flag;
-		}
-		System.out.println("============ user join date ====== "+userJoinDate);
-		this.userJoinDate = userJoinDate;
-	}*/
-	
-	//@Column(updatable=false, insertable=false)
-	//@JdbcTypeCode(SqlTypes.JSON)
-	//@Transient	
 }

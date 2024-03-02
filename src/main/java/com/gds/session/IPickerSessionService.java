@@ -2,7 +2,7 @@ package com.gds.session;
 
 import java.util.List;
 
-import com.gds.user.User;
+import com.gds.choice.Choice;
 
 /**
  * Service interface for Picker Session functions
@@ -12,6 +12,8 @@ import com.gds.user.User;
  */
 public interface IPickerSessionService {
 	List<PickerSessionDTO> findAllUserSessions(String createdBy);
-	PickerSession savePickerSession(PickerSession pickerSession); 
+	PickerSession createPickerSession(PickerSession pickerSession, String loginUserId); 
 	PickerSession findBySessionId(long sessionId);
+	PickerSession endPickerSession(long sessionId) throws Exception; 
+	List<Choice> inviteUsers(long sessionId, String createdByUserId, boolean includeCreator);
 }

@@ -2,9 +2,15 @@ package com.gds.session;
 
 import java.util.Date;
 
-public class PickerSessionDTO {	
+/**
+ * DTO class for Picker Session entity
+ * 
+ * @author Rajapriya
+ *
+ */
+public class PickerSessionDTO {	 
 	
-	public PickerSessionDTO() {		
+	public PickerSessionDTO() {	
 	}
 
 	public PickerSessionDTO(long sessionId, String sessionName, String sessionStatus, Date eventDate, String createdBy,

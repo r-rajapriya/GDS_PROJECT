@@ -5,7 +5,7 @@
     </head>
     
     <body>
-
+    
     	<div class="section" id="page"> <!-- Defining the #page section with the section tag -->
     
             <%@include file="header.jsp" %>
@@ -15,7 +15,7 @@
                    <form action="error" method="post" id="errForm" class="white-pink">
 				    <h1>Error</h1>
 				    <label style="color: #ff0000;">
-				        An unknown error occured while processing your request. Please check your inputs and try again.
+				        An unknown error has occured while processing your request. Please try again.
 				    </label>
 					</form>
             </div>

@@ -1,12 +1,11 @@
 package com.gds.choice;
 
-import java.util.List;
-
-import com.gds.user.User;
-
+/**
+ * Service interface for Choice related functions
+ * 
+ * @author Rajapriya
+ *
+ */
 public interface IChoiceService {
-	Choice findByChoiceId(String choiceId); 
-	Choice save(Choice choice); 
-	List<Choice> saveChoices(List<User> userList, long sessionId, String createdByUserId, boolean inviteAll, boolean includeCreator);
-	
+	Choice submitChoice(String userId, long sessionId, String restaurantName);
 }

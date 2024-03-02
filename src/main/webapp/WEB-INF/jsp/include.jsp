@@ -3,9 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
 <title>GDS - Restaurant Picker</title>
-<c:url value="/css" var="cssPath"/>
-<c:url value="/script" var="jsPath"/>
-<link rel="stylesheet" type="text/css" href="${cssPath}/styles.css" />
-<link rel="stylesheet" type="text/css" href="${cssPath}/htmlDatePicker.css" />
-<script type="text/javascript" src="${jsPath}/validation.js"></script>
-<script type="text/javascript" src="${jsPath}/htmlDatePicker.js"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/styles.css" />
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/htmlDatePicker.css" />
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/validation.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/htmlDatePicker.js"></script>

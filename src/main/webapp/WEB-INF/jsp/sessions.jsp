@@ -6,19 +6,21 @@
         	function createSession() {        		
         		elementName = document.getElementById('sessionName');
 	       		elementValue = elementName.value;
-        		if (elementValue == "") {
-        			alert ("Enter Session Name");
+        		if (elementValue.trim() == "") {
+        			alert ("Enter valid Session Name");
+        			document.getElementById('sessionName').value = '';
         			elementName.focus();
         			return false;
         		}
         		
         		elementName = document.getElementById('eventDate');
         		elementValue = elementName.value;
-        		if (elementValue == "") {
+        		if (elementValue.trim() == "") {
         			alert ("Enter valid Event Date");
+        			document.getElementById('eventDate').value = getCurrentDate();
         			elementName.focus();
         			return false;
-        		}       		
+        		}       		 
         		document.getElementById("crtSessForm").action = "createSession";        		
         		document.getElementById("crtSessForm").submit();
         	}
@@ -41,7 +43,7 @@
 				        <span>${msg}</span>
 				    </label>
 				    <c:if test="${not empty errMsg}"> 
-				    <label style="color: #ff0000;">
+				    <label style="color: #FF0000;">
 				        ${errMsg}
 				    </label>
 				    </c:if>
@@ -50,7 +52,7 @@
 				    	<tr>
 				    		<td class="lblTD">Session Name :</td>
 				    		<td class="inputTD">
-				    			<input id="sessionName" type="text" name="sessionName" maxlength="60" value="${pickerSession.sessionName}" required/>
+				    			<input id="sessionName" type="text" name="sessionName" maxlength="60" value="${pickerSession.sessionName}"/>
 				    		</td>				    		
 				    	</tr>
 				    	<tr>
@@ -90,8 +92,8 @@
 		                    	<td><%= i++ %></td>
 		                        <td>
 		                        	<c:choose>
-						  				<c:when test="${aSession.userJoinDate != null}"> <!--  && aSession.sessionStatus == 'Open' -->
-		                        			<a href="viewSession?sessionId=<c:out value="${aSession.sessionId}"/>" class="up">${aSession.sessionName}</a>
+						  				<c:when test="${aSession.userJoinDate != null}"> 
+		                        			<a href="/gds/session/viewSession?sessionId=<c:out value="${aSession.sessionId}"/>" class="up">${aSession.sessionName}</a>
 				                        </c:when>
 									  <c:otherwise>
 									  	${aSession.sessionName}
@@ -99,15 +101,15 @@
 									</c:choose> 		                        
 		                        </td>
 		                        <td>${aSession.sessionStatus}</td>
-		                        <td><fmt:formatDate pattern="dd-MMM-yyyy" value="${aSession.eventDate}"/></td>
+		                        <td><fmt:formatDate pattern="dd/MM/yyyy" value="${aSession.eventDate}"/></td>
 		                        <td>${aSession.createdBy}</td>
 		                        <td>
 		                        	<c:choose>		                        		
 						  				<c:when test="${aSession.userJoinDate != null}">
-		                        			<fmt:formatDate pattern="dd-MMM-yyyy hh:mm:ss" value="${aSession.userJoinDate}"/>
+		                        			<fmt:formatDate pattern="d/M/yyyy, hh:mm:ss aa" value="${aSession.userJoinDate}"/>
 				                        </c:when>
 				                        <c:when test="${aSession.sessionStatus == 'Open'}">
-				                        	<a href="joinSession?sessionId=<c:out value="${aSession.sessionId}"/>" class="up">Click to join</a>
+				                        	<a href="/gds/choice/join?sessionId=<c:out value="${aSession.sessionId}"/>" class="up">Click to join</a>
 				                        </c:when>
 									  <c:otherwise>
 									  	    -	  

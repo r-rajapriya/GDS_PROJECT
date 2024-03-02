@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.gds.api.GDSRestController;
 import com.gds.choice.ChoiceController;
 import com.gds.session.PickerSessionController;
 import com.gds.user.UserController;
@@ -19,11 +20,14 @@ class RestaurantPickerApplicationTest {
 	private ChoiceController choiceController;
 	@Autowired
 	private UserController userController;
+	@Autowired
+	private GDSRestController restController;
 	
 	@Test
 	void contextLoads() throws Exception {
 		assertNotNull(sessionController);
 		assertNotNull(choiceController);
 		assertNotNull(userController);
+		assertNotNull(restController);
 	}	
 }

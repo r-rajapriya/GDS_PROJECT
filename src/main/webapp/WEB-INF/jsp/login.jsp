@@ -53,9 +53,9 @@
 				    </c:if>
 				    <table id="gdsForm">
 				    	<tr>
-				    		<td class="lblTD">User Name :</td>
+				    		<td class="lblTD">User Id :</td>
 				    		<td class="inputTD">
-				    			<input id="userId" type="text" name="userId" maxlength="10" required autofocus value="${user.userId}"/>
+				    			<input id="userId" type="text" name="userId" maxlength="10" value="${user.userId}"/>
 				    		</td>
 				    		<td class="lblTD">&nbsp;</td>
 				    		<td class="inputTD">&nbsp;</td>
@@ -63,7 +63,7 @@
 				    	<tr>
 				    		<td class="lblTD">Password :</td>
 				    		<td class="inputTD">
-				    			<input id="password" type="password" name="password" maxlength="12" required value="${user.password}"/>
+				    			<input id="password" type="password" name="password" maxlength="12" value="${user.password}"/>
 				    		</td>
 				    		<td class="lblTD">&nbsp;</td>
 				    		<td class="inputTD">&nbsp;</td>

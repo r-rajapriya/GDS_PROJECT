@@ -7,11 +7,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import org.springframework.scheduling.annotation.Async;
 
 /**
  * Restaurant Picker Application to collect team members choice of Restaurants and 
- * Choose the one randomly for team lunch event
+ * Choose one randomly for team lunch event
  * 
  * @author Rajapriya
  *

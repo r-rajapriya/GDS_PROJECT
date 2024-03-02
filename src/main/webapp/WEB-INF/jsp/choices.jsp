@@ -3,16 +3,77 @@
     <head>
         <%@include file="include.jsp" %>  
         <script>
-        	function submitChoice() {        		
-        		elementName = document.getElementById('restaurantName');
-	       		elementValue = elementName.value;
-        		if (elementValue == "") {
-        			alert ("Enter Restaurant Name");
-        			elementName.focus();        			
+        async function submitChoice() {  
+        		var sessId = document.getElementById('sessionId').value;
+        		var restName = document.getElementById('restaurantName').value;
+        		if (restName.trim() == "") {
+        			alert ("Enter valid Restaurant Name");
+        			document.getElementById('restaurantName').value = '';
+        			document.getElementById('restaurantName').focus();        			
         			return false;
         		}        		
-        		document.getElementById("crtChoiceForm").action = "/gds/choice/submitChoice";        		
-        		document.getElementById("crtChoiceForm").submit();
+        		
+        		try
+           		{   		  			
+           			const reqUrl = "${pageContext.request.contextPath}"+"/api/submitChoice?sessionId="+sessId+"&restaurantName="+restName; 
+           			
+           			const settings = {
+           			        method: 'POST',
+           			        headers: {
+           			            Accept: 'application/json',
+           			            'Content-Type': 'application/json',
+           			        }
+           			    };
+           			
+           			//Calls Rest controller
+           			const response = await fetch(reqUrl, settings);           					
+           			if(!response.ok)
+ 					{
+ 						alert("Error while calling rest api : "+response.status);
+ 						return;
+ 					}
+ 					const myJson = await response.json();		        
+			    	
+ 					//Process the response Json to create Choice List
+ 					var msg = '<label style="color: #000000;"><span>Your Choice got submitted successfully</span></label>';
+ 					var headerStr = "<table><tr><td>S.No</td><td>User ID</td><td>Joined On</td><td>Restaurant Name</td><td>Submitted On</td></tr>";
+ 					var endStr = "</table>";
+ 					var contentStr = "";
+					var chList = myJson.userChoices;
+					
+					for(var i = 0; i < chList.length; i++) 
+					{
+            		    var aChoice = chList[i];
+						contentStr += '<tr><td>' + (i+1) + '</td>';
+            		    contentStr += '<td>' + aChoice.userId + '</td>';            		    
+            		    
+            		    if(aChoice.joinDate != null) {
+            		    	const joinDate = new Date(aChoice.joinDate);
+            		    	contentStr += '<td>' + joinDate.toLocaleString('en-IN') + '</td>';
+            		    }          		    	
+            		    else
+            		    	contentStr += '<td>&nbsp;</td>';
+            		    	
+            		    if(aChoice.restaurantChoice != null)
+            		    	contentStr += '<td>' + aChoice.restaurantChoice + '</td>';
+           		    	else
+               		    	contentStr += '<td>&nbsp;</td>';
+               		    	
+            		    if(aChoice.submitDate != null) {
+            		    	var submitDate = new Date(aChoice.submitDate);
+            		    	contentStr += '<td>' + submitDate.toLocaleString('en-IN') + '</td>';
+            		    }
+            		    else
+            		    	contentStr += '<td>&nbsp;</td>';
+					}
+ 					
+					//Set new table of choices to the choice Div object
+ 					document.getElementById("choiceListDiv").innerHTML = msg+headerStr+contentStr+endStr; 
+           		}
+        		catch(err)
+        		{        			
+        			alert("Error while refresh Choice List : "+err);
+        		}        		
         	}
         	function frmClear() {
         		document.getElementById("crtChoiceForm").reset();
@@ -22,15 +83,13 @@
         		document.getElementById("crtChoiceForm").submit();        			
         	}      	  
         	function inviteAll() {
-    			document.getElementById("crtChoiceForm").action = "/gds/choice/inviteAll";
+    			document.getElementById("crtChoiceForm").action = "/gds/session/inviteAll";
         		document.getElementById("crtChoiceForm").submit();        			
         	} 
         	function endSession() {
     			document.getElementById("crtChoiceForm").action = "/gds/session/endSession";
         		document.getElementById("crtChoiceForm").submit();        			
-        	}
-        	
-        	        	
+        	}        	        	
         </script>   
     </head>    
     <body>
@@ -65,7 +124,7 @@
 						  <c:otherwise>
 							  <tr><td class="lblTD">Your choice of Restaurant :</td>
 							  	<td class="inputTD">
-					    			<input id="restaurantName" type="text" name="restaurantName" maxlength="60" required/>
+					    			<input id="restaurantName" type="text" name="restaurantName" maxlength="60"/>
 					    		</td></tr>						    
 						  </c:otherwise>
 						</c:choose>
@@ -79,16 +138,16 @@
 		       				<input type="button" class="button" value="Back" onclick="frmBack();"/>&nbsp;	
 		       						       				
 		       				<c:if test="${pickerSession.inviteAll ne 'invited'}"> 
-		       					<input type="button" class="button" value="Invite All" onClick="inviteAll();"/>&nbsp;				    
+		       					<input type="button" class="button" value="Invite All" onclick="inviteAll();"/>&nbsp;				    
 		       				</c:if>	
 		       				
-		       				<c:if test="${(pickerSession.createdBy eq loginUser.userId) and (empty pickerSession.selectedRestaurant)}"> 
+		       				<c:if test="${(pickerSession.createdBy eq loginUser.userId) and (empty pickerSession.selectedRestaurant) and pickerSession.inviteAll eq 'invited'}"> 
 		       					<input type="button" class="button" value="End Session" onclick="endSession();"/>&nbsp;	
 		       				</c:if>	    
 			  			 </label>
-				    <br/>				    	
+				    <br/><br/>				    	
 			        <h1>Given Choices</h1>
-				    <div class="CSSTableGenerator" >
+				    <div id="choiceListDiv" class="CSSTableGenerator" >
 		                <table>
 		                    <tr>
 		                        <td>S.No</td>
@@ -98,15 +157,15 @@
 			                    <td>Submitted On</td>			                    
 		                    </tr>
 		                    <% int i = 1; %>
-		                    <c:forEach items="${pickerSession.userChoices}" var="aChoice">
-		                    <tr>
-		                    	<td><%= i++ %></td>
-		                        <td>${aChoice.userId}</a></td>
-		                        <td><fmt:formatDate pattern="dd-MMM-yyyy hh:mm:ss" value="${aChoice.joinDate}"/></td>
-		                        <td>${aChoice.restaurantChoice}</td>
-		                        <td><fmt:formatDate pattern="dd-MMM-yyyy hh:mm:ss" value="${aChoice.submitDate}"/></td>
-		                    </tr>
-			                </c:forEach>
+			                    <c:forEach items="${pickerSession.userChoices}" var="aChoice">
+			                    <tr>
+			                    	<td><%= i++ %></td>
+			                        <td>${aChoice.userId}</td>
+			                        <td><fmt:formatDate pattern="d/M/yyyy, hh:mm:ss aa" value="${aChoice.joinDate}"/></td>
+			                        <td>${aChoice.restaurantChoice}</td>
+			                        <td><fmt:formatDate pattern="d/M/yyyy, hh:mm:ss aa" value="${aChoice.submitDate}"/></td>
+			                    </tr>
+			                </c:forEach>			                
 		                </table>
 		            </div>
 				    <br/>
