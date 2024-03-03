@@ -42,6 +42,7 @@ public class RequestInterceptor implements HandlerInterceptor {
 		    }
 		}
 		response.sendRedirect("/gds/error");
+		log.error("=== Invalid user session ===");
 		return false;
 	}
 }

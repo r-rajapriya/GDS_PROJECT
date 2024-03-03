@@ -58,7 +58,7 @@
 				    	<tr>
 				    		<td class="lblTD">Event Date :</td>
 				    		<td class="inputTD">
-				    			<input id="eventDate" type="text" name="eventDate" maxlength="10" value="<fmt:formatDate pattern="dd/MM/yyyy" value="${pickerSession.eventDate}"/>" required onClick="GetDate(this);"/>
+				    			<input id="eventDate" type="text" name="eventDate" maxlength="10" value="<fmt:formatDate pattern="dd/MM/yyyy" value="${pickerSession.eventDate}"/>" required onclick="GetDate(this);"/>
 				    			<script>document.getElementById("eventDate").value = getCurrentDate();</script>
 				    		</td>
 				    	</tr>

@@ -9,24 +9,25 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 /**
- * Restaurant Picker Application to collect team members choice of Restaurants and 
- * Choose one randomly for team lunch event
+ * Restaurant Picker Application to collect team members choice of Restaurants
+ * and Choose one randomly for team lunch event
  * 
  * @author Rajapriya
  *
  */
 @SpringBootApplication
-public class RestaurantPickerApplication extends SpringBootServletInitializer{
-	
+public class RestaurantPickerApplication extends SpringBootServletInitializer {
+
 	private static final Logger log = LogManager.getLogger(RestaurantPickerApplication.class);
+
+	@Override 
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) 
+	{ 
+		return builder.sources(RestaurantPickerApplication.class); 
+	}
 	
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(RestaurantPickerApplication.class);
-    }
-    
 	public static void main(String[] args) {
-		SpringApplication.run(RestaurantPickerApplication.class, args);		
+		SpringApplication.run(RestaurantPickerApplication.class, args);
 		log.info("Restaurant Picker Application is started....");
 	}
 }

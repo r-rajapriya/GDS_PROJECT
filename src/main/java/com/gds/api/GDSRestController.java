@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.gds.choice.Choice;
 import com.gds.choice.IChoiceService;
@@ -49,9 +50,17 @@ public class GDSRestController {
 	{	
 		log.info("inside API submitChoice method");	
 
+		if(sessionId == null || "".equals(sessionId.trim()))
+			throw new ResponseStatusException(
+			           HttpStatus.BAD_REQUEST, "Invalid session id");	
+		
+		if(restaurantName == null || "".equals(restaurantName.trim()))
+			throw new ResponseStatusException(
+			           HttpStatus.BAD_REQUEST, "Invalid restaurant name");	
+		
 		PickerSession pickerSession = null;
 		try
-		{			       
+		{				
 	        User loginUser = (User) request.getSession().getAttribute(AppConstants.LOGIN_USER);
 	        
 	        Choice aChoice = choiceService.submitChoice(loginUser.getUserId(), Long.valueOf(sessionId), restaurantName);	
@@ -62,6 +71,8 @@ public class GDSRestController {
 		catch (Exception e) {
 			request.setAttribute(AppConstants.ERR_MSG, "Error while submit choice");
 			log.error("Unable to submit choice "+e.getMessage());
+			throw new ResponseStatusException(
+			           HttpStatus.INTERNAL_SERVER_ERROR, "Unable to submit choice", e);			
 		}		
 		return new ResponseEntity<PickerSession>(pickerSession, HttpStatus.OK);
 	}
